@@ -31,11 +31,51 @@ public class Task {
     @Column(name = "priority", nullable = false)
     private TaskPriority priority;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "task_list_id")
+    private TaskList tasklist;
+
     @Column(name = "created" , nullable = false)
     private  LocalDateTime created;
 
     @Column(name = "updated", nullable = false)
     private LocalDateTime updated;
+
+    public Task() {
+
+    }
+
+    public Task( UUID id , String title,String description, TaskStatus status, LocalDateTime duedate, TaskPriority priority, TaskList tasklist, LocalDateTime created, LocalDateTime updated) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.duedate = duedate;
+        this.priority = priority;
+        this.tasklist = tasklist;
+        this.created = created;
+        this.updated = updated;
+    }
+
+    public TaskList getTasklist() {
+        return tasklist;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return Objects.equals(id, task.id) && Objects.equals(title, task.title) && Objects.equals(description, task.description) && Objects.equals(duedate, task.duedate) && status == task.status && priority == task.priority && Objects.equals(tasklist, task.tasklist) && Objects.equals(created, task.created) && Objects.equals(updated, task.updated);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, duedate, status, priority, tasklist, created, updated);
+    }
+
+    public void setTasklist(TaskList tasklist) {
+        this.tasklist = tasklist;
+    }
 
     public UUID getId() {
         return id;
@@ -101,40 +141,7 @@ public class Task {
         this.updated = updated;
     }
 
-    public Task(UUID id, String title, String description, LocalDateTime duedate, TaskStatus status, TaskPriority priority, LocalDateTime created, LocalDateTime updated) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.duedate = duedate;
-        this.status = status;
-        this.priority = priority;
-        this.created = created;
-        this.updated = updated;
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(title, task.title) && Objects.equals(description, task.description) && Objects.equals(duedate, task.duedate) && status == task.status && priority == task.priority && Objects.equals(created, task.created) && Objects.equals(updated, task.updated);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, description, duedate, status, priority, created, updated);
-    }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", duedate=" + duedate +
-                ", status=" + status +
-                ", priority=" + priority +
-                ", created=" + created +
-                ", updated=" + updated +
-                '}';
-    }
 }
