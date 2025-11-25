@@ -26,7 +26,7 @@ public class TaskMapperImpl implements TaskMapper {
     }
 
     @Override
-    public TaskDto fromEntity(Task task) {
+    public TaskDto toDto(Task task) {
         return new TaskDto(
                 task.getId(),
                 task.getTitle(),
